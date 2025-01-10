@@ -11,25 +11,32 @@ export interface InfiniteScrollProps {
 const InfiniteScroll = ({ children, ...props }: PropsWithChildren<InfiniteScrollProps>) => {
   const { callback, threshold, endPoint } = props;
   const targetRef = useRef<HTMLDivElement>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
   const onIntersect = ([entry]: IntersectionObserverEntry[]) => {
     if (entry.isIntersecting) callback();
   };
-  const observer = useRef(
-    new IntersectionObserver(onIntersect, {
-      threshold,
-    }),
-  ).current;
 
   useEffect(() => {
-    if (endPoint) return observer && observer.disconnect();
-    if (targetRef && targetRef.current) observer.observe(targetRef.current);
-    return () => observer && observer.disconnect();
+    observer.current = new IntersectionObserver(onIntersect, {
+      threshold,
+    });
+
+    if (targetRef.current) observer.current.observe(targetRef.current);
+
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, [threshold]);
+
+  useEffect(() => {
+    if (endPoint) observer.current?.disconnect();
+    else if (targetRef.current) observer.current?.observe(targetRef.current);
   }, [endPoint, observer, targetRef]);
 
   return (
     <>
       {children}
-      <div ref={targetRef}>아래</div>
+      <div ref={targetRef}>더 보기</div>
     </>
   );
 };
