@@ -2,8 +2,8 @@ import '@styles/global.css';
 import { ReactNode } from 'react';
 
 export const metadata = {
-  title: "FURIUM's portfolio",
-  description: "FURIUM's portfolio v3.0",
+  title: '무한스크롤',
+  description: '양방향 무한스크롤 테스트',
   viewport: {
     width: 'device-width',
     initialScale: 1,
