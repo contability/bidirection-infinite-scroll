@@ -57,7 +57,7 @@ const ListTemplate = ({ list }: IListTemplateProps) => {
             return (
               <li key={`list-${userId}__${id}`} className="h-[200px]">
                 <b className="text-[3rem] font-bold text-gray-500">{`${userId}-${id}`}</b>
-                <p className="text-[2rem]">{title}</p>
+                <p className="text-[3rem]">{title}</p>
                 <p className="text-[1.5rem]">{body}</p>
               </li>
             );

@@ -4,6 +4,12 @@ export const useUpdateUrlParam = () => {
   const router = useRouter();
   const pathName = usePathname();
 
+  /**
+   *
+   * @param updateParams 업데이트 할 파라미터 데이터
+   * @param path url path
+   * @param scroll 스크롤 여부
+   */
   const updateUrlParam = (updateParams: { [key: string]: string | number | null }, path?: string, scroll?: boolean) => {
     const params = new URLSearchParams(window.location.search);
     Object.entries(updateParams).map(([key, value]) => {
