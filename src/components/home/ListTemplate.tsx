@@ -1,16 +1,22 @@
 'use client';
 
-import { useState } from 'react';
 import useTopScreenEventHandler from '../../hooks/useTopScreenEventHandler';
 import InfiniteScroll from '@Components/shared/InfiniteScroll';
 import { IPost } from '../../app/(home)/page';
+import { useUpdateUrlParam } from '../../hooks/useUpdateUrlParam';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface IListTemplateProps {
   list: Array<IPost>;
 }
 
 const ListTemplate = ({ list }: IListTemplateProps) => {
-  const [count, setCount] = useState(10);
+  const updateUrlParam = useUpdateUrlParam();
+  const searchParams = useSearchParams();
+  const [limit, setLimit] = useState(Number(searchParams.get('limit')) || 5);
+  const offset = Number(searchParams.get('offset')) || 5;
+
   const { onWheel, onTouchEnd, onTouchStart } = useTopScreenEventHandler({
     isCallable: true,
     callback: () => console.log('top screen event trigger'),
@@ -20,8 +26,18 @@ const ListTemplate = ({ list }: IListTemplateProps) => {
   });
 
   const callbackFunction = () => {
-    setCount(state => state + 1);
+    setLimit(state => state + 5);
   };
+
+  useEffect(() => {
+    updateUrlParam(
+      {
+        limit: limit,
+      },
+      undefined,
+      false,
+    );
+  }, [limit]);
 
   return (
     <article

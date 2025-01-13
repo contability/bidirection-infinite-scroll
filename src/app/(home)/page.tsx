@@ -1,6 +1,5 @@
 import ListTemplate from '@Components/home/ListTemplate';
 import { fetchJsonPlaceholderApi } from '../../libs/api/jsonplaceholder';
-import InfiniteScroll from '@Components/shared/InfiniteScroll';
 
 export interface IPost {
   userId: number;
@@ -9,8 +8,16 @@ export interface IPost {
   body: string;
 }
 
-const MainPage = async () => {
-  const data = await fetchJsonPlaceholderApi(5);
+interface IMainPageProps {
+  searchParams: {
+    offset: number;
+    limit: number;
+  };
+}
+
+const MainPage = async ({ searchParams }: IMainPageProps) => {
+  const { offset, limit } = await searchParams;
+  const data = await fetchJsonPlaceholderApi(offset, limit);
   return <ListTemplate list={data} />;
 };
 
