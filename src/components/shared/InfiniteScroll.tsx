@@ -8,6 +8,9 @@ export interface InfiniteScrollProps {
   endPoint: boolean;
 }
 
+/**
+ * 무한 스크롤 컴포넌트 (하단)
+ */
 const InfiniteScroll = ({ children, ...props }: PropsWithChildren<InfiniteScrollProps>) => {
   const { callback, threshold, endPoint } = props;
   const targetRef = useRef<HTMLDivElement>(null);
@@ -36,7 +39,9 @@ const InfiniteScroll = ({ children, ...props }: PropsWithChildren<InfiniteScroll
   return (
     <>
       {children}
-      <div ref={targetRef}>더 보기</div>
+      <div className="text-center text-[8rem]" ref={targetRef}>
+        +
+      </div>
     </>
   );
 };

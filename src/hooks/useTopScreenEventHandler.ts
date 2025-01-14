@@ -14,6 +14,9 @@ interface UseTopScreenEventHandlerResult {
   onTouchEnd: TouchEventHandler<HTMLDivElement>;
 }
 
+/**
+ * 무한 스크롤 custom hook (상단)
+ */
 function useTopScreenEventHandler({
   isCallable,
   callback,

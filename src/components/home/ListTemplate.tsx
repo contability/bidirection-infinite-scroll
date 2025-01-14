@@ -15,29 +15,40 @@ const ListTemplate = ({ list }: IListTemplateProps) => {
   const updateUrlParam = useUpdateUrlParam();
   const searchParams = useSearchParams();
   const [limit, setLimit] = useState(Number(searchParams.get('limit')) || 5);
-  const offset = Number(searchParams.get('offset')) || 5;
+  const [offset, setOffset] = useState(Number(searchParams.get('offset')) || 10);
 
   const { onWheel, onTouchEnd, onTouchStart } = useTopScreenEventHandler({
     isCallable: true,
-    callback: () => console.log('top screen event trigger'),
+    callback: () => scrollUpEventHandler(),
     scrollOffset: 20,
     touchDistanceCriterion: -50,
     wheelDistanceCriterion: -10,
   });
 
-  const callbackFunction = () => {
+  const scrollUpEventHandler = () => {
+    console.log('scroll up');
+
+    if (offset > 0) {
+      setOffset(state => state - 1);
+      setLimit(state => state + 1);
+    }
+  };
+
+  const scrollDownEventHandler = () => {
+    console.log('scroll down');
     setLimit(state => state + 5);
   };
 
   useEffect(() => {
     updateUrlParam(
       {
+        offset: offset,
         limit: limit,
       },
       undefined,
       false,
     );
-  }, [limit]);
+  }, [offset, limit]);
 
   return (
     <article
@@ -48,7 +59,7 @@ const ListTemplate = ({ list }: IListTemplateProps) => {
     >
       <h1 className="p-[2rem] text-center text-[5rem] font-bold">양방향 스크롤</h1>
       <ul className="flex flex-col">
-        <InfiniteScroll callback={callbackFunction} threshold={0} endPoint={false}>
+        <InfiniteScroll callback={scrollDownEventHandler} threshold={0} endPoint={false}>
           {list.map(value => {
             const userId = value.userId;
             const id = value.id;
